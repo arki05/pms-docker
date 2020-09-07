@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM nvidia/cuda:10.1-base-ubuntu18.04
 
 ARG S6_OVERLAY_VERSION=v1.22.1.0
 ARG S6_OVERLAY_ARCH=amd64
@@ -12,12 +12,13 @@ ENTRYPOINT ["/init"]
 RUN \
 # Update and get dependencies
     apt-get update && \
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
       tzdata \
       curl \
       xmlstarlet \
       uuid-runtime \
       unrar \
+      libnvidia-encode-435 \
     && \
 
 # Fetch and extract S6 overlay
@@ -56,5 +57,14 @@ COPY root/ /
 RUN \
 # Save version and install
     /installBinary.sh
+
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES compute,video,utility
+
+RUN mkdir -p /usr/local/bin /patched-lib
+COPY patch.sh docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/patch.sh /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
 HEALTHCHECK --interval=5s --timeout=2s --retries=20 CMD /healthcheck.sh || exit 1

@@ -62,7 +62,7 @@ ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES compute,video,utility
 
 RUN mkdir -p /usr/local/bin /patched-lib
-COPY patch.sh docker-entrypoint.sh /usr/local/bin/
+RUN curl -s -o /usr/local/bin/patch.sh 'https://github.com/keylase/nvidia-patch/blob/master/patch.sh' && curl -s -o /usr/local/bin/docker-entrypoint.sh 'https://github.com/keylase/nvidia-patch/blob/master/docker-entrypoint.sh' 
 RUN chmod +x /usr/local/bin/patch.sh /usr/local/bin/docker-entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

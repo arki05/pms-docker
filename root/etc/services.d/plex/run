@@ -16,3 +16,5 @@ if [ ! -d "${PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR}" ]; then
 fi
 
 exec s6-setuidgid plex /bin/sh -c 'LD_LIBRARY_PATH=/usr/lib/plexmediaserver:/usr/lib/plexmediaserver/lib /usr/lib/plexmediaserver/Plex\ Media\ Server'
+
+

@@ -62,9 +62,9 @@ ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES compute,video,utility
 
 RUN mkdir -p /usr/local/bin /patched-lib
-RUN curl -s -o /usr/local/bin/patch.sh 'https://github.com/keylase/nvidia-patch/blob/master/patch.sh' && curl -s -o /usr/local/bin/docker-entrypoint.sh 'https://github.com/keylase/nvidia-patch/blob/master/docker-entrypoint.sh' 
+RUN curl -s -o /usr/local/bin/patch.sh 'https://raw.githubusercontent.com/keylase/nvidia-patch/master/patch.sh' && curl -s -o /usr/local/bin/docker-entrypoint.sh 'https://raw.githubusercontent.com/keylase/nvidia-patch/master/docker-entrypoint.sh' 
 RUN chmod +x /usr/local/bin/patch.sh /usr/local/bin/docker-entrypoint.sh
 
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+# CMD ["/usr/local/bin/docker-entrypoint.sh"]
 
 HEALTHCHECK --interval=5s --timeout=2s --retries=20 CMD /healthcheck.sh || exit 1

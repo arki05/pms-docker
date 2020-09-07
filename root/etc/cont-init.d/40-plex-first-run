@@ -1,5 +1,8 @@
 #!/usr/bin/with-contenv bash
 
+echo "Patching NVIDIA."
+exec bash /usr/local/bin/docker-entrypoint.sh
+
 # If we are debugging, enable trace
 if [ "${DEBUG,,}" = "true" ]; then
   set -x
